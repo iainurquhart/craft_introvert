@@ -6,6 +6,11 @@ Introvert allows you to see reverse related entries to the entry currently being
 
 ![Introvert Fieldtype](http://f.cl.ly/items/1k2b0y0e3T1W2b0k3V2B/Image%202014-05-20%20at%2010.15.05%20PM.png)
 
+The fieldtype is super handy for seeing which assets are being used by which entries:
+
+![Introvert Fieldtype](http://f.cl.ly/items/3h1X3r0H3l3j432I0E1Y/Image%202014-05-21%20at%208.19.42%20PM.png)
+
+
 Options for each field's instance allow you to restrict relationship lookups to specific sections.
 
 ### Usage
