@@ -1,11 +1,13 @@
-<div class="matrixblock">
+{% if elementType != "Asset" %}<div class="matrixblock">{% endif %}
 	<div class="tableview">
 		<table class="data fullwidth">
 			<thead>
 					<th scope="col">{{ "Title"|t }}</th>
 					<th scope="col">{{ "Section"|t }}</th>
 					<th scope="col">{{ "URI"|t }}</th>
+					{% if elementType != "Asset" %}
 					<th scope="col">{{ "Post Date"|t }}</th>
+					{% endif %}
 			</thead>
 			<tbody>
 				{% if entries|length %}
@@ -22,15 +24,22 @@
 							{{ entry.section }}
 						</td>
 						<td scope="row">
-							{% if entry.url %}
-								<a href="{{ entry.url }}" target="_blank" class="go">{{ entry.uri }}</a>
+
+							{% if elementType != "Asset" %}
+								{% if entry.url %}
+									<a href="{{ entry.url }}" target="_blank" class="go">{{ entry.uri }}</a>
+								{% else %}
+									--
+								{% endif %}
 							{% else %}
-								--
+								<a href="{{ entry.url }}" target="_blank" class="go">{{ "View"|t }}</a>
 							{% endif %}
 						</td>
+						{% if elementType != "Asset" %}
 						<td scope="row">
 							{{ entry.postDate.format("d/m/Y") }}
 						</td>
+						{% endif %}
 					</tr>
 					{% endfor %}
 				{% else %}
@@ -43,4 +52,4 @@
 			</tbody>
 		</table>
 	</div>
-</div>
+{% if elementType != "Asset" %}</div>{% endif %}

@@ -26,7 +26,8 @@ class Introvert_ReverseRelatedEntriesFieldType extends BaseFieldType
 
 		return craft()->templates->render(
 			'introvert/input', array(
-				'entries' 	=> $relatedEntries
+				'entries' 	=> $relatedEntries,
+				'elementType' => $this->element->elementType
 			)
 		);
 	}
