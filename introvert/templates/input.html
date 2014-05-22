@@ -10,6 +10,30 @@
 					{% endif %}
 			</thead>
 			<tbody>
+				{% if categories|length %}
+					{% for category in categories %}
+						<tr>
+						<td scope="row">
+							<div class="element">
+								<div class="label">
+									<span class="status {{ category.status }}"></span><span class="title"><a href="{{ url('categories/'~category.handle) }}">{{ category.title }}</a></span>
+								</div>
+							</div>
+						</td>
+						<td scope="row">
+							{{ category.section }} {{ "[Category]"|t }}
+						</td>
+						<td scope="row">
+							--
+						</td>
+						{% if elementType != "Asset" %}
+						<td scope="row">
+							{{ category.postDate.format("d/m/Y") }}
+						</td>
+						{% endif %}
+					</tr>
+					{% endfor %}
+				{% endif %}
 				{% if entries|length %}
 					{% for entry in entries %}
 					<tr>
@@ -42,10 +66,12 @@
 						{% endif %}
 					</tr>
 					{% endfor %}
-				{% else %}
+				{% endif %}
+				{% if categories|length == 0 and entries|length == 0 %}
 					<tr>
-						<td colspan="4">
-							{{ "No entries found"|t }}
+						<tr>
+						<td colspan="{{ (elementType == "Asset") ? 3 : 4 }}">
+							{{ "No items found"|t }}
 						</td>
 					</tr>
 				{% endif %}
