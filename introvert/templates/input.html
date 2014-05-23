@@ -1,3 +1,5 @@
+{# Categories and Assets are edited in a modal, hence the cut down view for those elementTypes #}
+
 {% if elementType != "Asset" and elementType != "Category" %}<div class="matrixblock">{% endif %}
 	<div class="tableview">
 		<table class="data fullwidth">
@@ -10,6 +12,8 @@
 					{% endif %}
 			</thead>
 			<tbody>
+
+				{# Show category relationships first #}
 				{% if categories|length %}
 					{% for category in categories %}
 						<tr>
@@ -34,6 +38,8 @@
 					</tr>
 					{% endfor %}
 				{% endif %}
+
+				{# Entry/Matrix relationships #}
 				{% if entries|length %}
 					{% for entry in entries %}
 					<tr>
@@ -67,6 +73,8 @@
 					</tr>
 					{% endfor %}
 				{% endif %}
+
+				{# nothing to show #}
 				{% if categories|length == 0 and entries|length == 0 %}
 					<tr>
 						<tr>
@@ -75,6 +83,7 @@
 						</td>
 					</tr>
 				{% endif %}
+
 			</tbody>
 		</table>
 	</div>
