@@ -1,15 +1,45 @@
-{% if elementType != "Asset" %}<div class="matrixblock">{% endif %}
+{# Categories and Assets are edited in a modal, hence the cut down view for those elementTypes #}
+
+{% if elementType != "Asset" and elementType != "Category" %}<div class="matrixblock">{% endif %}
 	<div class="tableview">
 		<table class="data fullwidth">
 			<thead>
 					<th scope="col">{{ "Title"|t }}</th>
 					<th scope="col">{{ "Section"|t }}</th>
 					<th scope="col">{{ "URI"|t }}</th>
-					{% if elementType != "Asset" %}
+					{% if elementType != "Asset" and elementType != "Category" %}
 					<th scope="col">{{ "Post Date"|t }}</th>
 					{% endif %}
 			</thead>
 			<tbody>
+
+				{# Show category relationships first #}
+				{% if categories|length %}
+					{% for category in categories %}
+						<tr>
+						<td scope="row">
+							<div class="element">
+								<div class="label">
+									<span class="status {{ category.status }}"></span><span class="title"><a href="{{ url('categories/'~category.handle) }}">{{ category.title }}</a></span>
+								</div>
+							</div>
+						</td>
+						<td scope="row">
+							{{ category.section }} {{ "[Category]"|t }}
+						</td>
+						<td scope="row">
+							--
+						</td>
+						{% if elementType != "Asset" and elementType != "Category" %}
+						<td scope="row">
+							{{ category.postDate.format("d/m/Y") }}
+						</td>
+						{% endif %}
+					</tr>
+					{% endfor %}
+				{% endif %}
+
+				{# Entry/Matrix relationships #}
 				{% if entries|length %}
 					{% for entry in entries %}
 					<tr>
@@ -25,7 +55,7 @@
 						</td>
 						<td scope="row">
 
-							{% if elementType != "Asset" %}
+							{% if elementType != "Asset" and elementType != "Category" %}
 								{% if entry.url %}
 									<a href="{{ entry.url }}" target="_blank" class="go">{{ entry.uri }}</a>
 								{% else %}
@@ -35,21 +65,26 @@
 								<a href="{{ entry.url }}" target="_blank" class="go">{{ "View"|t }}</a>
 							{% endif %}
 						</td>
-						{% if elementType != "Asset" %}
+						{% if elementType != "Asset" and elementType != "Category" %}
 						<td scope="row">
 							{{ entry.postDate.format("d/m/Y") }}
 						</td>
 						{% endif %}
 					</tr>
 					{% endfor %}
-				{% else %}
+				{% endif %}
+
+				{# nothing to show #}
+				{% if categories|length == 0 and entries|length == 0 %}
 					<tr>
-						<td colspan="4">
-							{{ "No entries found"|t }}
+						<tr>
+						<td colspan="{{ (elementType == "Asset") ? 3 : 4 }}">
+							{{ "No items found"|t }}
 						</td>
 					</tr>
 				{% endif %}
+
 			</tbody>
 		</table>
 	</div>
-{% if elementType != "Asset" %}</div>{% endif %}
+{% if elementType != "Asset" and elementType != "Category" %}</div>{% endif %}

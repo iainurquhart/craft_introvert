@@ -12,24 +12,41 @@ class Introvert_ReverseRelatedEntriesFieldType extends BaseFieldType
 	public function getInputHtml($name, $value)
 	{
 
-		// get our related entries if they exist:
-		$criteria = craft()->elements->getCriteria(ElementType::Entry);
-		$criteria->relatedTo = array('targetElement' => $this->element);
-		$criteria->order = "title DESC";
-		
-		if($this->getSettings()->sections != '*')
+		$relatedElements = $relatedCategories = array();
+		$allowedSections = $this->getSettings()->sections;
+
+		// these are all we're looking up for now.
+		// Users will come later. Tags too I guess.
+		$elementTypes = array(
+			ElementType::MatrixBlock => '',
+			ElementType::Entry => '',
+			ElementType::Category => ''
+		);
+
+		// shortcut
+		$introvert = craft()->introvert_relationship;
+
+		foreach($elementTypes as $key => $value)
 		{
-			$criteria->sectionId = $this->getSettings()->sections;
+			$relatedElements[$key] = $introvert->getRelationships($key, $this->element, $allowedSections);
 		}
 
-		$relatedEntries = craft()->elements->findElements($criteria);
+		// combine entries and matrix entries
+		$relatedEntries = $relatedElements[ElementType::Entry] + $relatedElements[ElementType::MatrixBlock];
+		$relatedCategories = $relatedElements[ElementType::Category];
+
+		// sort our entries by title
+		$introvert->sortRelArray( $relatedEntries );
+		$introvert->sortRelArray( $relatedCategories );
 
 		return craft()->templates->render(
 			'introvert/input', array(
 				'entries' 	=> $relatedEntries,
+				'categories' => $relatedCategories,
 				'elementType' => $this->element->elementType
 			)
 		);
+
 	}
 
 	protected function defineSettings()
@@ -57,6 +74,7 @@ class Introvert_ReverseRelatedEntriesFieldType extends BaseFieldType
 			)
 		);
 	}
+
 
 }
 
