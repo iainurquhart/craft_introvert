@@ -11,7 +11,7 @@ class IntrovertPlugin extends BasePlugin
 
 	function getVersion()
 	{
-		return '0.1.1';
+		return '0.2';
 	}
 
 	function getDeveloper()
