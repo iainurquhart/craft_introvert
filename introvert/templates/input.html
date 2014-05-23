@@ -1,11 +1,11 @@
-{% if elementType != "Asset" %}<div class="matrixblock">{% endif %}
+{% if elementType != "Asset" and elementType != "Category" %}<div class="matrixblock">{% endif %}
 	<div class="tableview">
 		<table class="data fullwidth">
 			<thead>
 					<th scope="col">{{ "Title"|t }}</th>
 					<th scope="col">{{ "Section"|t }}</th>
 					<th scope="col">{{ "URI"|t }}</th>
-					{% if elementType != "Asset" %}
+					{% if elementType != "Asset" and elementType != "Category" %}
 					<th scope="col">{{ "Post Date"|t }}</th>
 					{% endif %}
 			</thead>
@@ -26,7 +26,7 @@
 						<td scope="row">
 							--
 						</td>
-						{% if elementType != "Asset" %}
+						{% if elementType != "Asset" and elementType != "Category" %}
 						<td scope="row">
 							{{ category.postDate.format("d/m/Y") }}
 						</td>
@@ -49,7 +49,7 @@
 						</td>
 						<td scope="row">
 
-							{% if elementType != "Asset" %}
+							{% if elementType != "Asset" and elementType != "Category" %}
 								{% if entry.url %}
 									<a href="{{ entry.url }}" target="_blank" class="go">{{ entry.uri }}</a>
 								{% else %}
@@ -59,7 +59,7 @@
 								<a href="{{ entry.url }}" target="_blank" class="go">{{ "View"|t }}</a>
 							{% endif %}
 						</td>
-						{% if elementType != "Asset" %}
+						{% if elementType != "Asset" and elementType != "Category" %}
 						<td scope="row">
 							{{ entry.postDate.format("d/m/Y") }}
 						</td>
@@ -78,4 +78,4 @@
 			</tbody>
 		</table>
 	</div>
-{% if elementType != "Asset" %}</div>{% endif %}
+{% if elementType != "Asset" and elementType != "Category" %}</div>{% endif %}
