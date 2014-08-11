@@ -13,6 +13,12 @@ class Introvert_RelationshipService extends BaseApplicationComponent
 		$this->element 	= $element;
 		$this->sections = $sections;
 
+		// no relationships if element is new
+		if($this->element->id === null)
+		{
+			return array();
+		}
+
 		$criteria = craft()->elements->getCriteria($type);
 		$criteria->relatedTo = array('targetElement' => $element);
 		$elements = craft()->elements->findElements($criteria);
