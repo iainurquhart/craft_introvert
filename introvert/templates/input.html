@@ -44,11 +44,20 @@
 					{% for entry in entries %}
 					<tr>
 						<td scope="row">
-							<div class="element">
+							<div class="element"
+								 ondblclick="Craft.showElementEditor($(this));"
+								 onclick=""
+								 data-id="{{ entry.id }}"
+								 data-url="{{ entry.url }}"
+								 data-locale="{{ craft.locale }}"
+								 data-status="{{ entry.status }}"
+								 data-label="{{ entry.title }}"
+								 data-editable="">
 								<div class="label">
-									<span class="status {{ entry.status }}"></span><span class="title"><a href="{{ entry.cpEditUrl }}">{{ entry.title }}</a></span>
+									<span class="status {{ entry.status }}"></span><span class="title">{{ entry.title }}</span>
 								</div>
 							</div>
+							<a href="{{ entry.cpEditUrl }}" class="go"></a>
 						</td>
 						<td scope="row">
 							{{ entry.section }}
