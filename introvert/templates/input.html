@@ -32,7 +32,7 @@
 						</td>
 						{% if elementType != "Asset" and elementType != "Category" %}
 						<td scope="row">
-							{{ category.postDate.format("d/m/Y") }}
+							{{ category.postDate.localeDate() }}
 						</td>
 						{% endif %}
 					</tr>
@@ -67,7 +67,7 @@
 						</td>
 						{% if elementType != "Asset" and elementType != "Category" %}
 						<td scope="row">
-							{{ entry.postDate.format("d/m/Y") }}
+							{{ entry.postDate.localeDate() }}
 						</td>
 						{% endif %}
 					</tr>
