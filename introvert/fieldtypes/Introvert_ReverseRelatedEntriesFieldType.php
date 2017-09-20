@@ -1,7 +1,7 @@
 <?php
 namespace Craft;
 
-class Introvert_ReverseRelatedEntriesFieldType extends BaseFieldType
+class Introvert_ReverseRelatedEntriesFieldType extends BaseFieldType implements IPreviewableFieldType
 {
 
 	public function getName()
@@ -75,6 +75,42 @@ class Introvert_ReverseRelatedEntriesFieldType extends BaseFieldType
 		);
 	}
 
+	public function getTableAttributeHtml($value)
+	{
+		$relatedElements = $relatedCategories = array();
+		$allowedSections = $this->getSettings()->sections;
 
+		// these are all we're looking up for now.
+		// Users will come later. Tags too I guess.
+		$elementTypes = array(
+			ElementType::MatrixBlock => '',
+			ElementType::Entry => '',
+			ElementType::Category => ''
+		);
+
+		// shortcut
+		$introvert = craft()->introvert_relationship;
+
+		foreach($elementTypes as $key => $value)
+		{
+			$relatedElements[$key] = $introvert->getRelationships($key, $this->element, $allowedSections);
+		}
+
+		// combine entries and matrix entries
+		$relatedEntries = $relatedElements[ElementType::Entry] + $relatedElements[ElementType::MatrixBlock];
+		$relatedCategories = $relatedElements[ElementType::Category];
+
+		// sort our entries by title
+		$introvert->sortRelArray( $relatedEntries );
+		$introvert->sortRelArray( $relatedCategories );
+
+		return craft()->templates->render(
+			'introvert/table', array(
+				'entries' 	=> $relatedEntries,
+				'categories' => $relatedCategories,
+				'elementType' => $this->element->elementType
+			)
+		);
+	}
 }
 
