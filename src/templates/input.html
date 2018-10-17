@@ -1,13 +1,13 @@
 {# Categories and Assets are edited in a modal, hence the cut down view for those elementTypes #}
 
-{% if elementType != "Asset" and elementType != "Category" %}<div class="matrixblock">{% endif %}
+{% if elementType != "craft\elements\Asset" and elementType != "craft\elements\Category" %}<div class="matrixblock">{% endif %}
 	<div class="tableview">
 		<table class="data fullwidth">
 			<thead>
 					<th scope="col">{{ "Title"|t }}</th>
 					<th scope="col">{{ "Section"|t }}</th>
 					<th scope="col">{{ "URI"|t }}</th>
-					{% if elementType != "Asset" and elementType != "Category" %}
+					{% if elementType != "craft\elements\Asset" and elementType != "craft\elements\Category" %}
 					<th scope="col">{{ "Post Date"|t }}</th>
 					{% endif %}
 			</thead>
@@ -30,7 +30,7 @@
 						<td scope="row">
 							--
 						</td>
-						{% if elementType != "Asset" and elementType != "Category" %}
+						{% if elementType != "craft\elements\Asset" and elementType != "craft\elements\Category" %}
 						<td scope="row">
 							{{ category.postDate.format("d/m/Y") }}
 						</td>
@@ -55,7 +55,7 @@
 						</td>
 						<td scope="row">
 
-							{% if elementType != "Asset" and elementType != "Category" %}
+							{% if elementType != "craft\elements\Asset" and elementType != "craft\elements\Category" %}
 								{% if entry.url %}
 									<a href="{{ entry.url }}" target="_blank" class="go">{{ entry.uri }}</a>
 								{% else %}
@@ -65,7 +65,7 @@
 								<a href="{{ entry.url }}" target="_blank" class="go">{{ "View"|t }}</a>
 							{% endif %}
 						</td>
-						{% if elementType != "Asset" and elementType != "Category" %}
+						{% if elementType != "craft\elements\Asset" and elementType != "craft\elements\Category" %}
 						<td scope="row">
 							{{ entry.postDate.format("d/m/Y") }}
 						</td>
@@ -78,7 +78,7 @@
 				{% if categories|length == 0 and entries|length == 0 %}
 					<tr>
 						<tr>
-						<td colspan="{{ (elementType == "Asset") ? 3 : 4 }}">
+						<td colspan="{{ (elementType == "craft\elements\Asset") ? 3 : 4 }}">
 							{{ "No items found"|t }}
 						</td>
 					</tr>
@@ -87,4 +87,4 @@
 			</tbody>
 		</table>
 	</div>
-{% if elementType != "Asset" and elementType != "Category" %}</div>{% endif %}
+{% if elementType != "craft\elements\Asset" and elementType != "craft\elements\Category" %}</div>{% endif %}

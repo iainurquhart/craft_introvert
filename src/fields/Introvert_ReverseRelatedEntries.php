@@ -1,49 +1,65 @@
 <?php
-namespace Craft;
+namespace iainurquhart\introvert\fields;
 
-class Introvert_ReverseRelatedEntriesFieldType extends BaseFieldType implements IPreviewableFieldType
+use Craft;
+
+use craft\base\Field;
+use craft\base\ElementInterface;
+use craft\elements\MatrixBlock;
+use craft\elements\Entry;
+use craft\elements\Category;
+
+use iainurquhart\introvert\Introvert;
+use iainurquhart\introvert\services\Introvert as IntrovertService;
+
+
+class Introvert_ReverseRelatedEntries extends Field
 {
+
+	public $sections;
 
 	public function getName()
 	{
 		return Craft::t('Reverse Related Entries');
 	}
 
-	public function getInputHtml($name, $value)
+	public function getInputHtml($value, ElementInterface $element = null): string
 	{
 
 		$relatedElements = $relatedCategories = array();
-		$allowedSections = $this->getSettings()->sections;
+		$allowedSections = $this->sections;
 
 		// these are all we're looking up for now.
 		// Users will come later. Tags too I guess.
 		$elementTypes = array(
-			ElementType::MatrixBlock => '',
-			ElementType::Entry => '',
-			ElementType::Category => ''
+			MatrixBlock::class => '',
+			Entry::class => '',
+			Category::class => ''
 		);
 
 		// shortcut
-		$introvert = craft()->introvert_relationship;
+		$introvert = new IntrovertService();
 
-		foreach($elementTypes as $key => $value)
+		foreach($elementTypes as $key => $val)
 		{
-			$relatedElements[$key] = $introvert->getRelationships($key, $this->element, $allowedSections);
+			$relatedElements[$key] = $introvert->getRelationships($key, $element, $allowedSections);
 		}
 
+		//Craft::dd($relatedElements);
+
 		// combine entries and matrix entries
-		$relatedEntries = $relatedElements[ElementType::Entry] + $relatedElements[ElementType::MatrixBlock];
-		$relatedCategories = $relatedElements[ElementType::Category];
+		$relatedEntries = $relatedElements['craft\elements\Entry'] + $relatedElements['craft\elements\MatrixBlock'];
+		$relatedCategories = $relatedElements['craft\elements\Category'];
 
 		// sort our entries by title
 		$introvert->sortRelArray( $relatedEntries );
 		$introvert->sortRelArray( $relatedCategories );
 
-		return craft()->templates->render(
+		return Craft::$app->view->renderTemplate(
 			'introvert/input', array(
 				'entries' 	=> $relatedEntries,
 				'categories' => $relatedCategories,
-				'elementType' => $this->element->elementType
+				'elementType' => get_class($element)
 			)
 		);
 
@@ -59,7 +75,7 @@ class Introvert_ReverseRelatedEntriesFieldType extends BaseFieldType implements 
 	public function getSettingsHtml()
 	{
 
-		$sections = craft()->sections->getAllSections();
+		$sections = Craft::$app->sections->getAllSections();
 		
 		$sectionOptions = array();
 		foreach($sections as $section)
@@ -67,7 +83,7 @@ class Introvert_ReverseRelatedEntriesFieldType extends BaseFieldType implements 
 			$sectionOptions[ $section->id ] = $section->name;
 		}
 
-		return craft()->templates->render(
+		return Craft::$app->view->renderTemplate(
 			'introvert/settings', array(
 				'settings' 			=> $this->getSettings(),
 				'sectionOptions' 	=> $sectionOptions
@@ -75,7 +91,7 @@ class Introvert_ReverseRelatedEntriesFieldType extends BaseFieldType implements 
 		);
 	}
 
-	public function getTableAttributeHtml($value)
+	public function getTableAttributeHtml($value, craft\base\ElementInterface $element): string
 	{
 		$relatedElements = $relatedCategories = array();
 		$allowedSections = $this->getSettings()->sections;
@@ -89,7 +105,7 @@ class Introvert_ReverseRelatedEntriesFieldType extends BaseFieldType implements 
 		);
 
 		// shortcut
-		$introvert = craft()->introvert_relationship;
+		$introvert = Craft::$app->introvert_relationship;
 
 		foreach($elementTypes as $key => $value)
 		{
@@ -104,7 +120,7 @@ class Introvert_ReverseRelatedEntriesFieldType extends BaseFieldType implements 
 		$introvert->sortRelArray( $relatedEntries );
 		$introvert->sortRelArray( $relatedCategories );
 
-		return craft()->templates->render(
+		return Craft::$app->view->renderTemplate(
 			'introvert/table', array(
 				'entries' 	=> $relatedEntries,
 				'categories' => $relatedCategories,
