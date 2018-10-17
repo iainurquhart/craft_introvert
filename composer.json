@@ -1,0 +1,40 @@
+{
+    "name": "iainurquhart/introvert",
+    "description": "Introvert",
+    "type": "craft-plugin",
+    "version": "2.0",
+    "keywords": [
+        "craft",
+        "craftcms",
+        "craft-plugin"
+    ],
+    "support": {
+        "docs": "https://github.com/intoeetive/craft_introvert/blob/master/README.md"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Iain Urquhart",
+            "homepage": "http://iain.co.nz/"
+        },
+        {
+            "name": "Yurii Salimovskyi",
+            "homepage": "http://www.intoeetive.com/"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0-RC1"
+    },
+    "autoload": {
+        "psr-4": {
+          "iainurquhart\\introvert\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Introvert",
+        "handle": "introvert",
+        "hasCpSettings": false,
+        "hasCpSection": false,
+        "class": "iainurquhart\\introvert\\Introvert"
+    }
+}

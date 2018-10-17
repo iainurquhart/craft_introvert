@@ -1,7 +1,13 @@
 <?php
-namespace Craft;
+namespace iainurquhart\introvert\services;
 
-class Introvert_RelationshipService extends BaseApplicationComponent
+use Craft;
+use craft\base\Component;
+use craft\elements\Entry;
+use craft\elements\MatrixBlock;
+use craft\elements\Category;
+
+class Introvert extends Component
 {
 	var $type;
 	var $element;
@@ -19,21 +25,20 @@ class Introvert_RelationshipService extends BaseApplicationComponent
 			return array();
 		}
 
-		$criteria = craft()->elements->getCriteria($type);
-		$criteria->relatedTo = array('targetElement' => $element);
-		$elements = craft()->elements->findElements($criteria);
-
 		switch($type)
 		{
-			case ElementType::MatrixBlock:
+			case 'craft\elements\MatrixBlock';
+				$elements = MatrixBlock::find()->relatedTo(['targetElement' => $element])->all();	
 				return $this->_parseMatrixBlocks($elements);
 				break;
 
-			case ElementType::Entry:
+				case 'craft\elements\Entry';
+				$elements = Entry::find()->relatedTo(['targetElement' => $element])->all();	
 				return $this->_parseEntries($elements);
 				break;
 
-			case ElementType::Category:
+				case 'craft\elements\Category';
+				$elements = Category::find()->relatedTo(['targetElement' => $element])->all();	
 				return $this->_parseCategories($elements);
 				break;
 		}
@@ -88,7 +93,7 @@ class Introvert_RelationshipService extends BaseApplicationComponent
 		foreach($elements as $childElement)
 		{
 			// find the owner entry element
-			$owner = craft()->elements->getElementById($childElement->ownerId, ElementType::Entry);
+			$owner = Craft::$app->elements->getElementById($childElement->ownerId, ElementType::Entry);
 
 			// only add to relatedElements if it's within our field's selected sections preference
 			if($this->_inSelectedSections($owner))
@@ -122,7 +127,7 @@ class Introvert_RelationshipService extends BaseApplicationComponent
 			'cpEditUrl' => $element->cpEditUrl,
 			'url' 		=> $element->url,
 			'uri'		=> $element->uri,
-			'type' 		=> $element->elementType
+			//'type' 		=> $element->elementType
 		);
 	}
 
@@ -138,7 +143,7 @@ class Introvert_RelationshipService extends BaseApplicationComponent
 			'handle' 	=> $element->group->handle,
 			'postDate' 	=> $element->dateCreated,
 			'status' 	=> $element->status,
-			'type' 		=> $element->elementType
+			//'type' 		=> $element->elementType
 		);
 	}
 

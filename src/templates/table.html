@@ -1,0 +1,21 @@
+{# Show category relationships first #}
+{% if categories|length %}
+	{% for category in categories %}
+			<div class="element">
+				<div class="label">
+					<span class="status {{ category.status }}"></span><span class="title"><a href="{{ url('categories/'~category.handle) }}">{{ category.title }}</a></span>
+				</div>
+			</div>
+	{% endfor %}
+{% endif %}
+
+{# Entry/Matrix relationships #}
+{% if entries|length %}
+	{% for entry in entries %}
+			<div class="element">
+				<div class="label">
+					<span class="status {{ entry.status }}"></span><span class="title"><a href="{{ entry.cpEditUrl }}">{{ entry.title }}</a></span>
+				</div>
+			</div>
+	{% endfor %}
+{% endif %}
